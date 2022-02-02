@@ -4,22 +4,12 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class ReactiveCalculator(a: Int, b: Int) {
-    internal val subjectAdd: Subject<Pair<Int, Int>> = PublishSubject.create()
-    internal val subjectSub: Subject<Pair<Int, Int>> = PublishSubject.create()
-    internal val subjectMul: Subject<Pair<Int, Int>> = PublishSubject.create()
-    internal val subjectDiv: Subject<Pair<Int, Int>> = PublishSubject.create()
-
-    internal val subjectCalc: Subject<ReactiveCalculator> = PublishSubject.create()
+    val subjectCalc: Subject<ReactiveCalculator> = PublishSubject.create()
 
     internal var numbers: Pair<Int, Int> = Pair(0, 0)
 
     init {
         numbers = Pair(a, b)
-
-        subjectAdd.map{ it.first + it.second }.subscribe { println("Add = $it") }
-        subjectAdd.map{ it.first - it.second }.subscribe { println("Subtract = $it") }
-        subjectAdd.map{ it.first * it.second }.subscribe { println("Multiply = $it") }
-        subjectAdd.map{ it.first / (it.second * 1.0) }.subscribe { println("Divide = $it") }
 
         subjectCalc.subscribe{
             with(it) {
@@ -32,20 +22,28 @@ class ReactiveCalculator(a: Int, b: Int) {
         subjectCalc.onNext(this)
     }
 
-    fun calculateAddition() {
-        subjectAdd.onNext(numbers)
+    fun calculateAddition() : Int {
+        val result = numbers.first + numbers.second
+        println("Add = $result")
+        return result
     }
 
-    fun calculateSubtraction() {
-        subjectSub.onNext(numbers)
+    fun calculateSubtraction() : Int {
+        val result = numbers.first - numbers.second
+        println("Subtract = $result")
+        return result
     }
 
-    fun calculateMultiplication() {
-        subjectMul.onNext(numbers)
+    fun calculateMultiplication() : Int {
+        val result = numbers.first * numbers.second
+        println("Multiply = $result")
+        return result
     }
 
-    fun calculateDivision() {
-        subjectDiv.onNext(numbers)
+    fun calculateDivision() : Double {
+        val result = numbers.first / (numbers.second * 1.0)
+        println("Division = $result")
+        return result
     }
 
     fun modifyNumbers(a: Int = numbers.first, b: Int = numbers.second) {
