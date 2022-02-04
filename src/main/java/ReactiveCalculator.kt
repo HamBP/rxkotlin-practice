@@ -51,7 +51,7 @@ class ReactiveCalculator(a: Int, b: Int) {
         subjectCalc.onNext(this)
     }
 
-    fun handleInput(inputLine: String?) {
+    suspend fun handleInput(inputLine: String?) {
         if(!inputLine.equals("exit")) {
             val pattern: Pattern = Pattern.compile("([a|b])(?:\\s?=(?:\\s)?(\\d*))")
 
